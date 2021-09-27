@@ -60,35 +60,28 @@ func (c *Cesar) convert(text string, key int) string {
 }
 
 
+func (c *Cesar) getMinMod(char uint8) (min int, mod int) {
+	if char >= 'A' && char <= 'Z' { // A - Z
+		min, mod = 65, 26
+	}
+
+	if char >= 'a' && char <= 'z' { // a - z
+		min, mod = 97, 26
+	}
+
+	if char >= '0' && char <= '9' { // a - z
+		min, mod = 48, 10
+	}
+	
+	return min, mod
+}
+
 func (c *Cesar) rotateChar(char uint8, key int) string {
 	var rotated int
 
-	if key > 0 {
-		switch char {
-		case 122: // z
+	min, mod := c.getMinMod(char)
 
+	rotated = ((int(char) - min + key) % mod) + min
 
-			rotated = 96 + key // a - 1
-		case 90: // Z
-			rotated = 64 + key // A - 1
-		case 57: // 9
-			rotated = 47 + key // 0 - 1
-		default:
-			rotated = int(char) + key
-		}
-	} else {
-		switch char {
-		case 97: // - a
-			rotated = 123 + key // a -
-		case 65: // - A-
-			rotated = 91  + key // A -
-		case 48: // - 0-
-			rotated = 58  + key // 0 -
-		default:
-			rotated = int(char) + key
-		}
-	}
-
-	log.Println(string(char), char, "=>", rotated, rune(rotated), string(rune(rotated)))
 	return string(rune(rotated))
 }
