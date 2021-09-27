@@ -25,7 +25,7 @@ func main() {
 		Key: *chave,
 	}
 
-	text := "texto de teste 1"
+	text := "ABCxyz"
 
 	crypt := c.Crypt(text)
 	log.Println(crypt)
@@ -60,28 +60,32 @@ func (c *Cesar) convert(text string, key int) string {
 }
 
 
-func (c *Cesar) getMinMod(char uint8) (min int, mod int) {
+func (c *Cesar) getMinMaxMod(char uint8) (min int, max int, mod int) {
 	if char >= 'A' && char <= 'Z' { // A - Z
-		min, mod = 65, 26
+		min, max, mod = 'A', 'Z', 'Z' - 'A' + 1
 	}
 
 	if char >= 'a' && char <= 'z' { // a - z
-		min, mod = 97, 26
+		min, max, mod = 'a', 'z', 'z' - 'a' + 1
 	}
 
 	if char >= '0' && char <= '9' { // a - z
-		min, mod = 48, 10
+		min, max, mod = '0', '9', '9' - '0' + 1
 	}
 	
-	return min, mod
+	return min, max, mod
 }
 
 func (c *Cesar) rotateChar(char uint8, key int) string {
 	var rotated int
 
-	min, mod := c.getMinMod(char)
+	min, max, mod := c.getMinMaxMod(char)
 
-	rotated = ((int(char) - min + key) % mod) + min
+	if key > 0 {
+		rotated = ((int(char) - min + key) % mod) + min
+	} else {
+		rotated = ((int(char) - max + key) % mod) + max
+	}
 
 	return string(rune(rotated))
 }
