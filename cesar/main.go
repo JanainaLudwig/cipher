@@ -14,11 +14,9 @@ func main() {
 
 	flag.Parse()
 
-	log.Println("cifrar:", *cifrar)
-	log.Println("decifrar:", *decifrar)
-	log.Println("chave:", *chave)
-	log.Println("input:", *input)
-	log.Println("output:", *output)
+	if *chave == 0 {
+		log.Println("Please use a key different than zero.")
+	}
 
 	c := Cesar{
 		Key: *chave,
@@ -26,8 +24,17 @@ func main() {
 
 	read, err := Read(*input)
 
-	err = Write(*output, c.Crypt(read))
-	if err != nil {
-		log.Fatal(err)
+	if *cifrar {
+		err = Write(*output, c.Crypt(read))
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else if *decifrar {
+		err = Write(*output, c.Decrypt(read))
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		log.Println("Please use -c or -d option.")
 	}
 }
