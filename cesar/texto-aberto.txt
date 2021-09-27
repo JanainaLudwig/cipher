@@ -1,0 +1,1 @@
+A cifra de César é um tipo de cifra de substituição, na qual cada letra de um texto a ser criptografado é substituída
