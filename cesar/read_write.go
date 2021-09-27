@@ -3,6 +3,13 @@ package main
 import (
 	"io/ioutil"
 	"os"
+	//"unicode"
+
+	//"unicode"
+
+	//"golang.org/x/text/secure/precis"
+	//"golang.org/x/text/transform"
+	//"golang.org/x/text/unicode/norm"
 )
 
 func Read(path string) (string, error) {
@@ -17,6 +24,9 @@ func Read(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	//t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	//result, _, _ := transform.String(t, "žůžo")
 
 	return string(all), nil
 }
