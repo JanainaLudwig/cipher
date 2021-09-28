@@ -1,5 +1,13 @@
 package main
 
+import (
+	"unicode"
+
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
+)
+
 type Cesar struct {
 	Key int
 }
@@ -15,7 +23,9 @@ func (c *Cesar) Decrypt(text string) string {
 func (c *Cesar) convert(text string, key int) string {
 	var converted string
 	for _, char := range text {
-		converted += c.rotateChar(uint8(char), key)
+		t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+		result, _, _ := transform.String(t, string(char))
+		converted += c.rotateChar(uint8(result[0]), key)
 	}
 
 	return converted
