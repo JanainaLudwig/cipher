@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"sort"
+	"time"
 	"unicode"
 )
 
@@ -15,54 +17,86 @@ func UpperMostFrequent() []rune {
 		'E',
 		'O',
 		'S',
-		'R',
+		//'R',
+		//'I',
+		//'N',
+		//'D',
+		//'M',
+		//'U',
 	}
 }
+
+type Result struct {
+	Key int
+	Percentage int
+}
+
+var minPercentage = 100
 
 func main() {
 	text := readText()
 	charsMap := readAllCharsNormalized(text)
 	mostFrequentRunes := sortChars(charsMap)
 
-	key0 := getKey(mostFrequentRunes[0], UpperMostFrequent()[0])
-	if key0 == getKey(mostFrequentRunes[1], UpperMostFrequent()[1]) {
-		log.Println("\nKey:", key0)
+	result := make(chan Result)
+
+
+	ticker := time.NewTicker(500 * time.Millisecond)
+
+	for  {
+		select {
+		case <- ticker.C:
+			minPercentage--
+		case r := <- result:
+			log.Printf("Key: %v - Percentage of correctness: %v%%", r.Key, r.Percentage)
+
+			c := Cesar{Key: r.Key}
+
+			fmt.Println(c.Decrypt(text))
+			return
+		default:
+			go findKeyPercentage(result, UpperMostFrequent(), mostFrequentRunes) // Probably this is correct one
+			for i := 0; i < 100; i++ {	// But also try other ones
+				go findKeyPercentage(result, shuffle(UpperMostFrequent()), mostFrequentRunes)
+			}
+		}
 	}
 
-	key, percentage := correctPercentage(UpperMostFrequent(), mostFrequentRunes)
-	log.Printf("Key: %v - Percentage of correctness: %v%%", key, percentage)
-
-	c := Cesar{Key: key}
-
-	fmt.Println(c.Decrypt(text))
 }
 
-func correctPercentage(commomWordsInPt, sortedChars []rune) (key int, percentage int) {
-	//shuffleFrequent := UpperMostFrequent()
-	//for i := range shuffleFrequent {
-	//	j := rand.Intn(i + 1)
-	//	shuffleFrequent[i], shuffleFrequent[j] = shuffleFrequent[j], shuffleFrequent[i]
-	//}
+func findKeyPercentage(result chan<-Result, commomWordsInPt, sortedChars []rune) {
+	key, percentage := findKeyAndPercentage(commomWordsInPt, sortedChars)
 
+	if percentage >= minPercentage {
+		result <- Result{
+			Key: key,
+			Percentage: percentage,
+		}
+	}
+}
+
+func shuffle(shuffleFrequent []rune) []rune {
+	for i := range shuffleFrequent {
+		j := rand.Intn(i + 1)
+		shuffleFrequent[i], shuffleFrequent[j] = shuffleFrequent[j], shuffleFrequent[i]
+	}
+
+	return shuffleFrequent
+}
+
+func findKeyAndPercentage(commomWordsInPt, sortedChars []rune) (key int, percentage int) {
 	qtdFrequentWords := len(commomWordsInPt)
 
 	commonKeys := make(map[int]int)
 
 	for i, frequentWord := range commomWordsInPt { // Passa pelas letras mais comuns
-		//for _, char := range sortedChars[0:10] {
-
 		key := getKey(sortedChars[i], frequentWord) // Compara cada letra
-		log.Println("comparing ", string(sortedChars[i]), string(frequentWord), "key: ", key)
+		//log.Println("comparing ", string(sortedChars[i]), string(frequentWord), "key: ", key)
 		commonKeys[key]++ // soma quantidade de vezes que a chave apareceu
-		//}
-
 	}
-
-	log.Println(commonKeys)
 
 	mostFrequentKey := commonKeys[0]
 	for key, count := range commonKeys {
-		log.Println(key, count)
 		if count > mostFrequentKey {
 			mostFrequentKey = key
 		}
