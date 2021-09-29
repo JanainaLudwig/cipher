@@ -22,8 +22,6 @@ func main() {
 		Key: *chave,
 	}
 
-	//read, err := Read(*input)
-
 	var read string
 
 	for {
