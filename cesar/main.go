@@ -1,10 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
-	"io"
 	"log"
+	"os"
 )
 
 func main() {
@@ -24,12 +25,10 @@ func main() {
 
 	var read string
 
-	for {
-		_, err := fmt.Scanf("%s", &read)
-		if err == io.EOF {
-			break
-		}
+	scanner := bufio.NewScanner(os.Stdin)
 
+	for scanner.Scan() {
+		read = scanner.Text()
 		if *cifrar {
 			fmt.Println(c.Crypt(read))
 		} else if *decifrar {
