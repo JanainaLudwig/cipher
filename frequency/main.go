@@ -19,7 +19,6 @@ func UpperMostFrequent() []uint8 {
 }
 
 func main() {
-
 	charsMap := readAllChars()
 	mostFrequentRunes := sortChars(charsMap)
 
@@ -70,4 +69,11 @@ func sortChars(charsMap map[rune]int) []rune {
 	})
 
 	return chars
+}
+
+func getKey(from, to rune) int {
+	fromNormalized := from - 'A'
+	toNormalized := to - 'A'
+
+	return int(toNormalized - fromNormalized)
 }
