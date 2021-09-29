@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"sort"
@@ -19,7 +20,8 @@ func UpperMostFrequent() []rune {
 }
 
 func main() {
-	charsMap := readAllChars()
+	text := readText()
+	charsMap := readAllCharsNormalized(text)
 	mostFrequentRunes := sortChars(charsMap)
 
 	key0 := getKey(mostFrequentRunes[0], UpperMostFrequent()[0])
@@ -27,22 +29,26 @@ func main() {
 		log.Println("\nKey:", key0)
 	}
 
-	correctPercentage(mostFrequentRunes)
+	key, percentage := correctPercentage(UpperMostFrequent(), mostFrequentRunes)
+	log.Printf("Key: %v - Percentage of correctness: %v%%", key, percentage)
+
+	c := Cesar{Key: key}
+
+	fmt.Println(c.Decrypt(text))
 }
 
-func correctPercentage(sortedChars []rune) {
+func correctPercentage(commomWordsInPt, sortedChars []rune) (key int, percentage int) {
 	//shuffleFrequent := UpperMostFrequent()
 	//for i := range shuffleFrequent {
 	//	j := rand.Intn(i + 1)
 	//	shuffleFrequent[i], shuffleFrequent[j] = shuffleFrequent[j], shuffleFrequent[i]
 	//}
 
-	//qtdFrequentWords := len(shuffleFrequent)
-
+	qtdFrequentWords := len(commomWordsInPt)
 
 	commonKeys := make(map[int]int)
 
-	for i, frequentWord := range UpperMostFrequent() { // Passa pelas letras mais comuns
+	for i, frequentWord := range commomWordsInPt { // Passa pelas letras mais comuns
 		//for _, char := range sortedChars[0:10] {
 
 		key := getKey(sortedChars[i], frequentWord) // Compara cada letra
@@ -54,41 +60,47 @@ func correctPercentage(sortedChars []rune) {
 
 	log.Println(commonKeys)
 
+	mostFrequentKey := commonKeys[0]
+	for key, count := range commonKeys {
+		log.Println(key, count)
+		if count > mostFrequentKey {
+			mostFrequentKey = key
+		}
+	}
 
-	//for j := 1; j < total; j++ {
-	//	if n[0] < n[j] {
-	//		n[0] = n[j]
-	//	}
-	//
-	//}
+	return mostFrequentKey, commonKeys[mostFrequentKey] * 100 / qtdFrequentWords
 }
 
-func readAllChars() map[rune]int {
+func readText() string {
 	var read string
-
-	charsMap := make(map[rune]int)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		read = scanner.Text()
+		read += scanner.Text()
+	}
 
-		// Busca as letras mais comuns
-		for _, char := range read {
-			if !unicode.IsLetter(char) {
-				continue
-			}
+	return read
+}
 
-			upperChar := unicode.ToUpper(char)
+func readAllCharsNormalized(read string) map[rune]int {
+	charsMap := make(map[rune]int)
 
-			_, ok := charsMap[upperChar]
-			if !ok {
-				charsMap[upperChar] = 1
-				continue
-			}
-
-			charsMap[upperChar]++
+	// Busca as letras mais comuns
+	for _, char := range read {
+		if !unicode.IsLetter(char) {
+			continue
 		}
+
+		upperChar := unicode.ToUpper(char)
+
+		_, ok := charsMap[upperChar]
+		if !ok {
+			charsMap[upperChar] = 1
+			continue
+		}
+
+		charsMap[upperChar]++
 	}
 
 	return charsMap

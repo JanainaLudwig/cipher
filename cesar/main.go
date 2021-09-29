@@ -24,7 +24,6 @@ func main() {
 	}
 
 	var read string
-
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
