@@ -41,14 +41,14 @@ func main() {
 	result := make(chan Result)
 
 
-	ticker := time.NewTicker(500 * time.Millisecond)
+	ticker := time.NewTicker(20 * time.Millisecond)
 
 	for  {
 		select {
 		case <- ticker.C:
 			minPercentage--
 		case r := <- result:
-			log.Printf("Key: %v - Percentage of correctness: %v%%", r.Key, r.Percentage)
+			log.Printf("Chave encontrada: %v", r.Key)
 
 			c := Cesar{Key: r.Key}
 
@@ -56,7 +56,7 @@ func main() {
 			return
 		default:
 			go findKeyPercentage(result, UpperMostFrequent(), mostFrequentRunes) // Probably this is correct one
-			for i := 0; i < 100; i++ {	// But also try other ones
+			for i := 0; i < 10; i++ {	// But also try other ones
 				go findKeyPercentage(result, shuffle(UpperMostFrequent()), mostFrequentRunes)
 			}
 		}
