@@ -1,23 +1,11 @@
-No Brasil e em outros países a passagem de ano costuma ser comemorada com uma festa. Nela há a presença de parentes e amigos.
+A análise de frequência é uma técnica simples de criptoanálise que consiste em identificar os caracteres do texto
+cifrado usando a frequência de uso dos caracteres na língua em que se supõe que a mensagem esteja escrita. O
+algoritmo de César é um cifrador de substituição simples e, portanto, vulnerável a essa técnica.
+Considerando a tabela de frequências de caracteres em português, apresentada na Figura 1, escreva um programa
+para fazer a criptoanálise de uma mensagem cifrada com o cifrador de César.
+A execução do programa deverá ser da seguinte forma:
 
-Alguns brasileiros costumam ir à praia má passagem de ano para fazer simpatias para atrair sorte ao longo do novo ano. Essas pessoas pulam sete ondas na hora da virada do ano.
-
-Algumas pessoas preferem ficar em locais mais tranquilos no momento da passagem de ano. Elas optam por se hospedar em hotéis em meio à natureza.
-
-Em algumas praias ocorre um evento chamado “queima de fogos”. A partir do ano de 2018 os fogos passaram a ser utilizados no Brasil sem que façam barulhos.
-
-Há uma grande variedade de comidas nas festas de final de ano do Brasil. Cada região do país costuma ter um cardápio próprio para essa ocasião.
-
-As profissões
-João é professor, ele trabalha lecionando em uma escola pública da cidade do Rio de Janeiro. Seu amigo Henrique decidiu ser cantor e faz apresentações em bares e restaurantes do país.
-
-Amália é amiga de Henrique e trabalha como médica, mas também gosta de cantar em eventos familiares. Sua irmã Ana é estudante e deseja ser arquiteta no futuro.
-
-O namorado de Ana também é estudante. Ele se chama Felipe e quer ser advogado quando concluir a faculdade de Direito.
-
-Eva estuda na mesma universidade que Ana e Felipe e está no último ano do curso de odontologia. Assim que terminar a faculdade, ela será dentista.
-
-Ricardo se formou em publicidade no final do ano passado, mas percebeu que gosta mesmo é de jornalismo e planeja cursar uma outra faculdade.
-
-No dia primeiro de maio é comemorado o dia do trabalho. Essa data é considerada feriado no calendário brasileiro e os profissionais costumam ter um dia de folga. Algumas pessoas organizam protestos nesse dia para que os trabalhadores sejam mais respeitados pelas empresas onde trabalham.
-
+A cifra de César é um tipo de cifra de substituição, na qual cada letra de um texto a ser criptografado é
+substituída por outra letra, presente no alfabeto porém deslocada um certo número de posições à esquerda ou
+à direita. Recebe esse nome pois, segundo o escritor Suetônio, foi utilizada por Júlio César para se comunicar
+com seus generais, protegendo mensagens militares.
