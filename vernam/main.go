@@ -2,15 +2,12 @@ package main
 
 import (
 	"bufio"
-	"crypto/sha512"
-	"encoding/base64"
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
 )
 
 // XOR
@@ -77,10 +74,6 @@ type Vernam struct {
 func NewVernam() *Vernam {
 	key := uuid.New().String()
 
-	hasher := sha512.New()
-	hasher.Write([]byte(key))
-	key = base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-
 	return &Vernam{
 		Key: key,
 		KeyLen: len(key),
@@ -88,25 +81,19 @@ func NewVernam() *Vernam {
 }
 
 func (v *Vernam) Crypt(text string) {
-	for i, char := range text {
-		fmt.Printf("%08b", uint8(char) ^ v.Key[i % v.KeyLen])
+	textBinary := text
+	keyBinary := v.Key
+
+
+	for i, char := range textBinary {
+		fmt.Printf("%s", string(uint8(char) ^ keyBinary[i % v.KeyLen]))
 	}
 }
 
-func (v *Vernam) Decrypt(binaryText string) {
-	log.Println(binaryText)
-	var charBinary string
-	var decryptIndex int
+func (v *Vernam) Decrypt(text string) {
+	keyBinary := v.Key
 
-	for _, char := range binaryText {
-		charBinary += string(char)
-
-		if len(charBinary) == 8 {
-			log.Println(decryptIndex)
-			charUint, _ := strconv.Atoi(charBinary)
-			fmt.Printf("%v", string(rune(uint8(charUint) ^ v.Key[decryptIndex % v.KeyLen])))
-			charBinary = ""
-			decryptIndex++
-		}
+	for i, char := range text {
+		fmt.Printf("%s", string(uint8(char) ^ keyBinary[i % v.KeyLen]))
 	}
 }
