@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -28,17 +28,22 @@ func main() {
 
 	//scanner := bufio.NewScanner(os.Stdin)
 
-	var t string
-	for {
-		_, err := fmt.Scan(&t)
-		if err == io.EOF {
-			break
-		}
+	scanner := bufio.NewScanner(os.Stdin)
 
-		read += t + " "
+	for scanner.Scan() {
+		newread := scanner.Text()
+		read += newread + "\n"
 	}
 
+	read = read[0: len(read)-1]
+
 	log.Println(read)
+
+
+	//for _, b := range read {
+	//	fmt.Printf("b %b", b)
+	//}
+	//log.Println("a")
 
 	if *cifrar != "" {
 		file = *cifrar
@@ -86,8 +91,8 @@ func NewVernam(textLen int) *Vernam {
 	for len(key) < textLen {
 		key += uuid.New().String()
 	}
-	//
-	//// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
+
+	// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
 	key = strings.ReplaceAll(key, "-", "")
 	return &Vernam{
 		Key: key,
@@ -96,6 +101,18 @@ func NewVernam(textLen int) *Vernam {
 }
 
 func (v *Vernam) Crypt(text string) {
+	textBinary := text
+	keyBinary := v.Key
+
+	// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
+
+	for i, char := range textBinary {
+		//log.Println("dec: ", i, v.KeyLen, i % v.KeyLen)
+		fmt.Printf("%s", string(char ^ rune(keyBinary[i % v.KeyLen])))
+	}
+}
+
+func (v *Vernam) CryptB(text string) {
 	textBinary := text
 	keyBinary := v.Key
 

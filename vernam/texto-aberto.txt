@@ -1,2 +1,6 @@
-package package package package package packageSDASA ASD SAD package package package
-packageSDASA
+A análise de frequência é uma técnica simples de criptoanálise que consiste em identificar os caracteres do texto
+cifrado usando a frequência de uso dos caracteres na língua em que se supõe que a mensagem esteja escrita. O
+algoritmo de César é um cifrador de substituição simples e, portanto, vulnerável a essa técnica.
+Considerando a tabela de frequências de caracteres em português, apresentada na Figura 1, escreva um programa
+para fazer a criptoanálise de uma mensagem cifrada com o cifrador de César.
+A execução do programa deverá ser da seguinte forma:
