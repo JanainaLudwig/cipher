@@ -53,6 +53,7 @@ func main() {
 			c := Cesar{Key: r.Key}
 
 			fmt.Println(c.Decrypt(text))
+			fmt.Printf("\nChave utilizada: %v", r.Key)
 			return
 		default:
 			go findKeyPercentage(result, UpperMostFrequent(), mostFrequentRunes) // Probably this is correct one

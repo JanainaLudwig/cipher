@@ -11,11 +11,6 @@ import (
 	"strings"
 )
 
-// XOR
-//if a, b := true, true; a != b {
-//
-//}
-
 func main() {
 	cifrar := flag.String("c", "", "Cifrar")
 	decifrar := flag.String("d", "", "Decifrar")
@@ -26,8 +21,6 @@ func main() {
 	var file string
 	var vernam *Vernam
 
-	//scanner := bufio.NewScanner(os.Stdin)
-
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
@@ -36,14 +29,6 @@ func main() {
 	}
 
 	read = read[0: len(read)-1]
-
-	log.Println(read)
-
-
-	//for _, b := range read {
-	//	fmt.Printf("b %b", b)
-	//}
-	//log.Println("a")
 
 	if *cifrar != "" {
 		file = *cifrar
@@ -92,7 +77,6 @@ func NewVernam(textLen int) *Vernam {
 		key += uuid.New().String()
 	}
 
-	// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
 	key = strings.ReplaceAll(key, "-", "")
 	return &Vernam{
 		Key: key,
@@ -104,22 +88,7 @@ func (v *Vernam) Crypt(text string) {
 	textBinary := text
 	keyBinary := v.Key
 
-	// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
-
 	for i, char := range textBinary {
-		//log.Println("dec: ", i, v.KeyLen, i % v.KeyLen)
-		fmt.Printf("%s", string(char ^ rune(keyBinary[i % v.KeyLen])))
-	}
-}
-
-func (v *Vernam) CryptB(text string) {
-	textBinary := text
-	keyBinary := v.Key
-
-	// 80c82918-c66c-44c2-8eb3-cfb09d1216c156e2071e-bb93-4b37-bee6-92e871a5da4b
-
-	for i, char := range textBinary {
-		//log.Println("dec: ", i, v.KeyLen, i % v.KeyLen)
 		fmt.Printf("%s", string(char ^ rune(keyBinary[i % v.KeyLen])))
 	}
 }
@@ -127,9 +96,7 @@ func (v *Vernam) CryptB(text string) {
 func (v *Vernam) Decrypt(text string) {
 	keyBinary := v.Key
 
-
 	for i, char := range text {
-		//log.Println("dec: ", i, v.KeyLen, i % v.KeyLen)
 		fmt.Printf("%s", string(char ^ rune(keyBinary[i % v.KeyLen])))
 	}
 }
