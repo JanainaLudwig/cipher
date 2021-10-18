@@ -74,10 +74,9 @@ func NewVernam(textLen int) *Vernam {
 	key := uuid.New().String()
 
 	for len(key) < textLen {
-		key += uuid.New().String()
+		key += strings.ReplaceAll(uuid.New().String(), "-", "")
 	}
 
-	key = strings.ReplaceAll(key, "-", "")
 	return &Vernam{
 		Key: key,
 		KeyLen: len(key),
