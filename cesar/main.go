@@ -27,13 +27,16 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		read = scanner.Text()
-		if *cifrar {
-			fmt.Println(c.Crypt(read))
-		} else if *decifrar {
-			fmt.Println(c.Decrypt(read))
-		} else {
-			log.Println("Please use -c or -d option.")
-		}
+		read += scanner.Text()  + "\n"
+	}
+
+	read = read[0: len(read)-1]
+
+	if *cifrar {
+		fmt.Printf("%v", c.Crypt(read))
+	} else if *decifrar {
+		fmt.Printf("%v", c.Decrypt(read))
+	} else {
+		log.Println("Please use -c or -d option.")
 	}
 }

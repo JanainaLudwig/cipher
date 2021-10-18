@@ -112,8 +112,10 @@ func readText() string {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		read += scanner.Text()
+		read += scanner.Text() + "\n"
 	}
+
+	read = read[0: len(read)-1]
 
 	return read
 }
