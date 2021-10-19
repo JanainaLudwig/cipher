@@ -71,7 +71,7 @@ type Vernam struct {
 }
 
 func NewVernam(textLen int) *Vernam {
-	key := uuid.New().String()
+	key := strings.ReplaceAll(uuid.New().String(), "-", "")
 
 	for len(key) < textLen {
 		key += strings.ReplaceAll(uuid.New().String(), "-", "")
